@@ -20,9 +20,11 @@ add_executable(${PROJECT_NAME}Test
 	main.cpp
 	# generic includes
 	include/utils.hpp
+	include/intervals.hpp
 
 	# --- test
 
 	# test generic methods
 	test/utils.cpp
+	test/intervals.cpp
 )
