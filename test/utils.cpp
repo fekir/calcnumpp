@@ -16,3 +16,9 @@ TEST_CASE("approx_equal"){
         REQUIRE_FALSE(calcnum::approx_equal(1.1, 1.2, 0.01));
     }
 }
+
+TEST_CASE("signum"){
+    REQUIRE(calcnum::signum( 1.) > 0);
+    REQUIRE(calcnum::signum( 0.) == 0);
+    REQUIRE(calcnum::signum(-1.) < 0);
+}

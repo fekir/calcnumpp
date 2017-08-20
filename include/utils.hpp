@@ -17,7 +17,16 @@ namespace calcnum{
 		return static_cast<double>(v);
 	}
 
-}
+	/// Returns the sign (less zero, zero, greater zero) of a floating point number
+	/// It does not work correctly with nan and does not distinguish between +0.0/-0.0, see copysign/signbit if you need the sign of those types too
+	/// It otherwise should work with any double, +inf and -inf included
+	enum sign : int {
+		lesszero = -1, zero = 0, greaterzero =1
+	};
+	inline sign signum(double d){
+		return d<0 ? sign::lesszero : d>0 ? sign::greaterzero : sign::zero;
+	}
 
+}
 
 #endif
