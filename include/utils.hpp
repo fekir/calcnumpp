@@ -5,7 +5,7 @@
 
 namespace calcnum{
 
-	// operator== should be avoided between floating point values
+	// operator== should, most of the times, be avoided between floating point values
 	inline bool approx_equal(double a, double b, double err){
 		assert(err>0 && "error for comparing values should be strict positive");
 		return a-err <= b && a+err >= b;
@@ -24,9 +24,20 @@ namespace calcnum{
 		lesszero = -1, zero = 0, greaterzero =1
 	};
 	inline sign signum(double d){
-		return d<0 ? sign::lesszero : d>0 ? sign::greaterzero : sign::zero;
+		return (d<0) ? sign::lesszero : (d>0) ? sign::greaterzero : sign::zero;
 	}
 
+	/// Helper class for verifying invariant of an object
+	template<class invar_obj>
+	struct test_invariant {
+		const invar_obj& obj;
+		test_invariant(const invar_obj& obj_) : obj(obj_)  {
+			assert(obj.invariant());
+		}
+		~test_invariant() {
+			assert(obj.invariant());
+		}
+	};
 }
 
 #endif
