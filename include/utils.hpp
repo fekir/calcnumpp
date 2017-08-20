@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CALCNUM_UTILS_HPP_7922187677
+#define CALCNUM_UTILS_HPP_7922187677
 
 #include <cassert>
 
@@ -18,3 +19,5 @@ namespace calcnum{
 
 }
 
+
+#endif
