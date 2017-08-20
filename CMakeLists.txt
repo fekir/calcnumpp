@@ -22,9 +22,14 @@ add_executable(${PROJECT_NAME}Test
 	include/utils.hpp
 	include/intervals.hpp
 
+	# root finding algorithms
+	include/bisec.hpp
 	# --- test
 
 	# test generic methods
 	test/utils.cpp
 	test/intervals.cpp
+
+	# test root finding algorithms
+	test/bisec.cpp
 )
