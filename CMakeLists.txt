@@ -24,6 +24,7 @@ add_executable(${PROJECT_NAME}Test
 
 	# root finding algorithms
 	include/bisec.hpp
+	include/newton.hpp
 	# --- test
 
 	# test generic methods
@@ -32,4 +33,5 @@ add_executable(${PROJECT_NAME}Test
 
 	# test root finding algorithms
 	test/bisec.cpp
+	test/newton.cpp
 )
