@@ -73,6 +73,34 @@ namespace calcnum{
 			assert(obj.invariant());
 		}
 	};
+
+	// Add Neumaier alternative algorithm
+	class kahan_summation_helper{
+		double sum = 0;
+		double comp = 0;
+	public:
+		kahan_summation_helper() = default;
+		explicit kahan_summation_helper(double val) : sum(val){}
+
+		friend kahan_summation_helper operator+(kahan_summation_helper lhs, const double val){
+
+			// kahan alg
+			auto diff = val - lhs.comp;
+			auto tmp = lhs.sum + diff;
+			lhs.comp = (tmp - lhs.sum) - diff;
+			lhs.sum = tmp;
+
+			return lhs;
+		}
+
+		friend kahan_summation_helper operator+(const double lhs, kahan_summation_helper rhs){
+			return (rhs+lhs);
+		}
+
+		explicit operator double () const {
+			return sum;
+		}
+	};
 }
 
 #endif
