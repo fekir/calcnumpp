@@ -34,6 +34,7 @@ namespace calcnum{
 	}
 
 	inline std::vector<double> calculate_convergency(std::vector<double> err, std::vector<double> step){
+		assert(err.size() == step.size());
 		std::transform(err.begin(), err.end(), err.begin(), [](double d){return std::log(std::fabs(d));});
 		std::transform(step.begin(), step.end(), step.begin(), [](double d){return std::log(std::fabs(d));});
 
@@ -46,8 +47,19 @@ namespace calcnum{
 
 		std::vector<double> conv;
 		conv.reserve(diff_lerr.size()-1);
-		std::transform(diff_lerr.begin()+1, diff_lerr.end(), diff_step.begin()+1, std::back_inserter(conv), [](double a ,double b){return a/b;});
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+		// explicit check for 0 since runtime/sanitizers may break the flow
+		std::transform(diff_lerr.begin()+1, diff_lerr.end(), diff_step.begin()+1, std::back_inserter(conv),
+		               [](double a ,double b){return b == 0 ? std::numeric_limits<double>::infinity() : a/b;}
+		);
+#pragma GCC diagnostic pop
 		return conv;
+	}
+
+	inline std::vector<double> clear_from_inf_nan(std::vector<double> c){
+		c.erase(std::remove_if(c.begin(), c.end(), [](double d){ return std::isinf(d) || std::isnan(d);}), c.end());
+		return c;
 	}
 
 	/// Helper class for verifying invariant of an object
