@@ -1,7 +1,7 @@
 #include <catch.hpp>
 
 #include "newton.hpp"
-
+#include "statistics.hpp"
 
 #include <functional>
 
@@ -42,7 +42,7 @@ namespace{
 		std::vector<double> h;
 		calcnum::secanti_iter it(f, x0, x1);
 		auto oldst = *it;
-		while(std::fabs(it->fxn) > 0.0000000001){
+		while(std::fabs(it->xn - sol) > 0.0000000001){
 			++it;
 			err.push_back(std::abs(sol-it->xn));
 			h.push_back(std::abs(sol-oldst.xn));
@@ -56,16 +56,19 @@ namespace{
 TEST_CASE("newton"){
     SECTION("simple_fun"){
         auto conv = simple_newton_test(fun_new, dfun_new, 7, 2);
-        (void) conv; // FIXME: REQUIRE conv ~ 2
+        auto res = calcnum::analyze_data(calcnum::clear_from_inf_nan(conv));
+        REQUIRE_FALSE(calcnum::is_outlier(res, 2));
     }
     SECTION("complex_fun"){
         SECTION("quad_conv"){
             auto conv = simple_newton_test(fun_new_doubleroot, dfun_new_doubleroot, 0.1,0);
-            (void) conv; // FIXME: REQUIRE conv ~ 1
+            auto res = calcnum::analyze_data(calcnum::clear_from_inf_nan(conv));
+            REQUIRE_FALSE(calcnum::is_outlier(res, 1));
         }
         SECTION("lin_conv"){
             auto conv = simple_newton_test(fun_new_doubleroot, dfun_new_doubleroot, 1.2,1.27970133100099630500239591776735167562639703793577);
-            (void) conv; // FIXME: REQUIRE conv ~ 2
+            auto res = calcnum::analyze_data(calcnum::clear_from_inf_nan(conv));
+            REQUIRE_FALSE(calcnum::is_outlier(res, 2));
         }
     }
 }
@@ -73,6 +76,21 @@ TEST_CASE("newton"){
 
 
 TEST_CASE("secanti"){
-    auto conv = simple_secanti_test(fun_new,7,7.01, 2);
-    (void) conv; // FIXME: REQUIRE conv ~ 2
+    SECTION("simple_fun"){
+        auto conv = simple_secanti_test(fun_new, 7, 7.01, 2);
+        auto res = calcnum::analyze_data(calcnum::clear_from_inf_nan(conv));
+        REQUIRE_FALSE(calcnum::is_outlier(res, 1.618));
+    }
+    SECTION("complex_fun"){
+        SECTION("quad_conv"){
+            auto conv = simple_secanti_test(fun_new_doubleroot, 0.1, 0.2, 0);
+            auto res = calcnum::analyze_data(calcnum::clear_from_inf_nan(conv));
+            REQUIRE_FALSE(calcnum::is_outlier(res, 1));
+        }
+        SECTION("lin_conv"){
+            auto conv = simple_secanti_test(fun_new_doubleroot, 1.2, 1.1, 1.27970133100099630500239591776735167562639703793577);
+            auto res = calcnum::analyze_data(calcnum::clear_from_inf_nan(conv));
+            REQUIRE_FALSE(calcnum::is_outlier(res, 1.618));
+        }
+    }
 }

@@ -20,6 +20,7 @@ add_executable(${PROJECT_NAME}Test
 	main.cpp
 	# generic includes
 	include/utils.hpp
+	include/statistics.hpp
 	include/intervals.hpp
 
 	# root finding algorithms
