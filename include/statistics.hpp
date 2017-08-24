@@ -18,13 +18,17 @@ namespace calcnum{
 	};
 
 	inline sd_mean analyze_data(std::vector<double> data){
-		const double sum = std::accumulate(data.begin(), data.end(), 0.0); // FIXME:
+		std::sort(data.begin(), data.end());
+		const auto sum_k = std::accumulate(data.begin(), data.end(), kahan_summation_helper());
+		auto sum = d(sum_k);
 		const double mean = sum/data.size();
-		double variance = 0;
-		for(const auto d : data){
-			variance += (d - mean)*(d - mean);
-		}
-		variance /= data.size();
+
+		const auto variance_k = std::accumulate(data.begin(), data.end(), kahan_summation_helper(),
+		                [&mean](const kahan_summation_helper& a, double b){
+			                return a + (b - mean)*(b - mean);
+		                }
+		);
+		auto variance = d(variance_k)/d(data.size());
 		const double standard_deviation = std::sqrt(variance);
 		return {standard_deviation, mean};
 	}
