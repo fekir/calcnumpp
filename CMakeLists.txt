@@ -30,6 +30,7 @@ add_executable(${PROJECT_NAME}Test
 
 	# test generic methods
 	test/utils.cpp
+	test/kahan.cpp
 	test/intervals.cpp
 
 	# test root finding algorithms

@@ -19,12 +19,12 @@ namespace calcnum{
 
 	inline sd_mean analyze_data(std::vector<double> data){
 		std::sort(data.begin(), data.end());
-		const auto sum_k = std::accumulate(data.begin(), data.end(), kahan_summation_helper());
+		const auto sum_k = std::accumulate(data.begin(), data.end(), kahan_sum());
 		auto sum = d(sum_k);
 		const double mean = sum/data.size();
 
-		const auto variance_k = std::accumulate(data.begin(), data.end(), kahan_summation_helper(),
-		                [&mean](const kahan_summation_helper& a, double b){
+		const auto variance_k = std::accumulate(data.begin(), data.end(), kahan_sum(),
+		                [&mean](const kahan_sum& a, double b){
 			                return a + (b - mean)*(b - mean);
 		                }
 		);

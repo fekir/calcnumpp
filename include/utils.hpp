@@ -75,32 +75,53 @@ namespace calcnum{
 	};
 
 	// Add Neumaier alternative algorithm
-	class kahan_summation_helper{
+	class kahan_sum{
 		double sum = 0;
-		double comp = 0;
+		double compensation = 0;
 	public:
-		kahan_summation_helper() = default;
-		explicit kahan_summation_helper(double val) : sum(val){}
+		kahan_sum() = default;
+		explicit kahan_sum(double val) : sum(val){}
 
-		friend kahan_summation_helper operator+(kahan_summation_helper lhs, const double val){
+		kahan_sum& operator+=(const double val){
 
-			// kahan alg
-			auto diff = val - lhs.comp;
-			auto tmp = lhs.sum + diff;
-			lhs.comp = (tmp - lhs.sum) - diff;
-			lhs.sum = tmp;
+			auto diff = val - compensation;
+			auto tmp = sum + diff;
+			compensation = (tmp - sum) - diff;
+			sum = tmp;
 
-			return lhs;
+			return *this;
 		}
-
-		friend kahan_summation_helper operator+(const double lhs, kahan_summation_helper rhs){
-			return (rhs+lhs);
-		}
-
 		explicit operator double () const {
 			return sum;
 		}
 	};
+	inline kahan_sum operator+(kahan_sum lhs, const double rhs){
+		return lhs += rhs;
+	}
+	inline kahan_sum operator+(const double lhs, kahan_sum rhs){
+		return rhs += lhs;
+	}
+	inline kahan_sum& operator-=(kahan_sum& lhs, const double rhs){
+		return lhs += (-rhs);
+	}
+	inline kahan_sum operator-(kahan_sum lhs, const double rhs){
+		return lhs += (-rhs);
+	}
+	inline kahan_sum operator-(const double lhs, kahan_sum rhs){
+		return rhs += (-lhs);
+	}
+	inline kahan_sum& operator++(kahan_sum& lhs){
+		return lhs += 1;
+	}
+	inline kahan_sum operator++(kahan_sum lhs,int){
+		return lhs += 1;
+	}
+	inline kahan_sum& operator--(kahan_sum& lhs){
+		return lhs += (-1);
+	}
+	inline kahan_sum operator--(kahan_sum lhs,int){
+		return lhs += (-1);
+	}
 }
 
 #endif
