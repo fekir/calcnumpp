@@ -34,8 +34,8 @@ namespace calcnum{
 	}
 
 	inline bool is_outlier(const sd_mean& info, double d){
-		const double  min = (info.mean - info.standard_deviation*3);
-		const double  max = (info.mean + info.standard_deviation*3);
+		const double min = (info.mean - info.standard_deviation*1.5);
+		const double max = (info.mean + info.standard_deviation*1.5);
 		return d < min || d > max;
 	}
 
