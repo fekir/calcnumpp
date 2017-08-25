@@ -33,25 +33,38 @@ namespace calcnum{
 		return (d<0) ? sign::lesszero : (d>0) ? sign::greaterzero : sign::zero;
 	}
 
-	inline std::vector<double> calculate_convergency(std::vector<double> err, std::vector<double> step){
-		assert(err.size() == step.size());
+
+	inline std::vector<double> calculate_convergency(std::vector<double> err){
+		assert(!err.empty() && "makes no sense to analyze empty vector");
 		std::transform(err.begin(), err.end(), err.begin(), [](double d){return std::log(std::fabs(d));});
-		std::transform(step.begin(), step.end(), step.begin(), [](double d){return std::log(std::fabs(d));});
 
 		// FIXME: can maybe do in-place
 		std::vector<double> diff_lerr;
 		std::adjacent_difference(err.begin(), err.end(), std::back_inserter(diff_lerr));
-
-		std::vector<double> diff_step;
-		std::adjacent_difference(step.begin(), step.end(), std::back_inserter(diff_step));
 
 		std::vector<double> conv;
 		conv.reserve(diff_lerr.size()-1);
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 		// explicit check for 0 since runtime/sanitizers may break the flow
-		std::transform(diff_lerr.begin()+1, diff_lerr.end(), diff_step.begin()+1, std::back_inserter(conv),
-		               [](double a ,double b){return b == 0 ? std::numeric_limits<double>::infinity() : a/b;}
+		std::transform(diff_lerr.begin(), diff_lerr.end()-1, diff_lerr.begin()+1, std::back_inserter(conv),
+		               [](double a ,double b){return a == 0 ? std::numeric_limits<double>::infinity() : b/a;}
+		);
+#pragma GCC diagnostic pop
+		return conv;
+	}
+
+	inline std::vector<double> calculate_convergency_no_cancellation(std::vector<double> err){
+		assert(!err.empty() && "makes no sense to analyze empty vector");
+		std::transform(err.begin(), err.end(), err.begin(), [](double d){return std::log(std::fabs(d));});
+
+		std::vector<double> conv;
+		conv.reserve(err.size()-1);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+		// explicit check for 0 since runtime/sanitizers may break the flow
+		std::transform(err.begin(), err.end()-1, err.begin()+1, std::back_inserter(conv),
+		               [](double a ,double b){return a == 0 ? std::numeric_limits<double>::infinity() : b/a;}
 		);
 #pragma GCC diagnostic pop
 		return conv;
