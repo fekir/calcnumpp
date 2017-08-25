@@ -21,7 +21,7 @@ namespace{
 		return std::exp(x) - 2*x - std::cos(x);
 	}
 
-	std::vector<double> simple_newton_test(const std::function<double(double)>& f, const std::function<double(double)>& df, double x0, double sol){
+	std::vector<double> simple_newton_test(const std::function<double(double)>& f, const std::function<double(double)>& df, double x0, double sol, std::size_t max_iter = 100){
 		std::vector<double> err;
 
 		calcnum::newton_iter it(f, df, x0);
@@ -34,7 +34,7 @@ namespace{
 		}
 		return err;
 	}
-	std::vector<double> simple_secanti_test(const std::function<double(double)>& f, double x0, double x1, double sol){
+	std::vector<double> simple_secanti_test(const std::function<double(double)>& f, double x0, double x1, double sol, std::size_t max_iter = 100){
 		std::vector<double> err;
 		calcnum::secanti_iter it(f, x0, x1);
 		auto oldst = *it;
