@@ -21,7 +21,7 @@ namespace calcnum{
 		std::sort(data.begin(), data.end());
 		const auto sum_k = std::accumulate(data.begin(), data.end(), kahan_sum());
 		auto sum = d(sum_k);
-		const double mean = sum/data.size();
+		const double mean = sum/d(data.size());
 
 		const auto variance_k = std::accumulate(data.begin(), data.end(), kahan_sum(),
 		                [&mean](const kahan_sum& a, double b){
