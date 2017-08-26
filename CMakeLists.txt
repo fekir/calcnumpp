@@ -22,6 +22,7 @@ add_executable(${PROJECT_NAME}Test
 	include/utils.hpp
 	include/statistics.hpp
 	include/intervals.hpp
+	include/error.hpp
 
 	# root finding algorithms
 	include/bisec.hpp
