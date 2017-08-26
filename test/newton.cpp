@@ -2,6 +2,7 @@
 
 #include "newton.hpp"
 #include "statistics.hpp"
+#include "error.hpp"
 
 #include <functional>
 
@@ -79,10 +80,14 @@ TEST_CASE("secant", "[newton][secant]"){
     }
     SECTION("complex_fun"){
         SECTION("lin_conv"){
+            calcnum::reset_float_env r;
             const auto err = simple_secanti_test(fun_new_doubleroot, 0.1, 0.2, 0);
             const auto conv = calcnum::calculate_convergency(err);
             auto res = calcnum::analyze_data(calcnum::clear_from_inf_nan(conv));
             REQUIRE_FALSE(calcnum::is_outlier(res, 1));
+
+            const auto fe_err = std::fetestexcept(FE_INVALID|FE_DIVBYZERO);
+            REQUIRE(fe_err); // secant does not support double roots
         }
         SECTION("superlin_conv"){
             const auto err = simple_secanti_test(fun_new_doubleroot, 1.2, 1.3, 1.27970133100099630500239591776735167562639703793577);
