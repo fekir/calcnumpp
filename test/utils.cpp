@@ -2,7 +2,7 @@
 
 #include "utils.hpp"
 
-TEST_CASE("approx_equal"){
+TEST_CASE("approx_equal", "[utils][approx_equal]"){
     SECTION("good case 1"){
         REQUIRE(calcnum::approx_equal(1.1, 1.2, 0.2));
     }
@@ -17,7 +17,7 @@ TEST_CASE("approx_equal"){
     }
 }
 
-TEST_CASE("signum"){
+TEST_CASE("signum", "[utils][signum]"){
     REQUIRE(calcnum::signum( 1.) > 0);
     REQUIRE(calcnum::signum( 0.) == 0);
     REQUIRE(calcnum::signum(-1.) < 0);

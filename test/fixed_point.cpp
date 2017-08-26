@@ -26,7 +26,7 @@ namespace{
 		return err;
 	}
 }
-TEST_CASE("fixed point"){
+TEST_CASE("fixed_point", "[fixed_point]"){
 	SECTION("cos(x)=x"){
 		auto err = simple_fix_point_test(cos_to_fix, 1, 0.73908513321516);
 		const auto conv = calcnum::calculate_convergency(err);

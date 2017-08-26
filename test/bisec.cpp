@@ -30,7 +30,7 @@ namespace{
 	}
 }
 
-TEST_CASE("bisection"){
+TEST_CASE("bisection", "[bisection]"){
 	SECTION("normal case"){
 		calcnum::closed_interval interval{0,11};
 		SECTION("linear"){

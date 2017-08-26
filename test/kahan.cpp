@@ -6,7 +6,7 @@
 using namespace calcnum;
 
 
-TEST_CASE("kahan"){
+TEST_CASE("kahan", "[utils][kahan]"){
 	SECTION("verify plus equivalence"){
 		const auto err = 0.0001;
 		kahan_sum h1;

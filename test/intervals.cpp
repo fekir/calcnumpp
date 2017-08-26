@@ -5,7 +5,7 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 
-TEST_CASE("closed_interval"){
+TEST_CASE("closed_interval", "[utils][interval]"){
     SECTION("case1"){
         const calcnum::closed_interval interval{0,1};
         REQUIRE(calcnum::length(interval)==1);
@@ -18,7 +18,7 @@ TEST_CASE("closed_interval"){
     }
 }
 
-TEST_CASE("open_interval"){
+TEST_CASE("open_interval", "[utils][interval]"){
     SECTION("case1"){
         const calcnum::open_interval interval{0,1};
         REQUIRE(calcnum::length(interval)==1);
