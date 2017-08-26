@@ -44,13 +44,9 @@ namespace calcnum{
 
 		std::vector<double> conv;
 		conv.reserve(diff_lerr.size()-1);
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wfloat-equal"
-		// explicit check for 0 since runtime/sanitizers may break the flow
 		std::transform(diff_lerr.begin(), diff_lerr.end()-1, diff_lerr.begin()+1, std::back_inserter(conv),
-		               [](double a ,double b){return a == 0 ? std::numeric_limits<double>::infinity() : b/a;}
+		               [](double a ,double b){return b/a;}
 		);
-#pragma GCC diagnostic pop
 		return conv;
 	}
 
@@ -60,13 +56,9 @@ namespace calcnum{
 
 		std::vector<double> conv;
 		conv.reserve(err.size()-1);
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wfloat-equal"
-		// explicit check for 0 since runtime/sanitizers may break the flow
 		std::transform(err.begin(), err.end()-1, err.begin()+1, std::back_inserter(conv),
-		               [](double a ,double b){return a == 0 ? std::numeric_limits<double>::infinity() : b/a;}
+		               [](double a ,double b){return b/a;}
 		);
-#pragma GCC diagnostic pop
 		return conv;
 	}
 
