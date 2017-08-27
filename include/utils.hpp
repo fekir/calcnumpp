@@ -39,30 +39,34 @@ namespace calcnum{
 		const auto err_size = err.size();
 		std::transform(err.begin(), err.end(), err.begin(), [](double d){return std::log(std::fabs(d));});
 
-		// FIXME: can maybe do in-place
-		std::vector<double> diff_lerr;
-		std::adjacent_difference(err.begin(), err.end(), std::back_inserter(diff_lerr));
+		auto& diff_lerr = err;
+		std::adjacent_difference(err.begin(), err.end(), diff_lerr.begin());
 		diff_lerr.erase(diff_lerr.begin());
 		assert(diff_lerr.size() == err_size-1);
 
-		std::vector<double> conv;
-		conv.reserve(diff_lerr.size()-1);
-		std::transform(diff_lerr.begin(), diff_lerr.end()-1, diff_lerr.begin()+1, std::back_inserter(conv),
+		const auto diff_lerr_size = diff_lerr.size();
+
+		auto& conv = diff_lerr;
+		std::transform(diff_lerr.begin(), diff_lerr.end()-1, diff_lerr.begin()+1, conv.begin(),
 		               [](double a ,double b){return b/a;}
 		);
-		assert(conv.size() == err_size-2);
+		conv.pop_back();
+		assert(conv.size() == diff_lerr_size-1);
+
 		return conv;
 	}
 
 	inline std::vector<double> calculate_convergency_no_cancellation(std::vector<double> err){
 		assert(!err.empty() && "makes no sense to analyze empty vector");
+		const auto err_size = err.size();
 		std::transform(err.begin(), err.end(), err.begin(), [](double d){return std::log(std::fabs(d));});
 
-		std::vector<double> conv;
-		conv.reserve(err.size()-1);
-		std::transform(err.begin(), err.end()-1, err.begin()+1, std::back_inserter(conv),
+		auto& conv = err;
+		std::transform(err.begin(), err.end()-1, err.begin()+1, conv.begin(),
 		               [](double a ,double b){return b/a;}
 		);
+		conv.pop_back();
+		assert(conv.size() == err_size-1);
 		return conv;
 	}
 
