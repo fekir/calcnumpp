@@ -17,17 +17,24 @@ namespace calcnum{
 		double mean;
 	};
 
+
+	struct variance_accumulator{
+		double mean;
+		kahan_sum operator()(const kahan_sum& a, double b){
+			return a + (b - mean)*(b - mean);
+		}
+	};
+
 	inline sd_mean analyze_data(std::vector<double> data){
+		assert(data.size() > 0 && "needs to be > 0");
 		std::sort(data.begin(), data.end());
 		const auto sum_k = std::accumulate(data.begin(), data.end(), kahan_sum());
 		auto sum = d(sum_k);
 		const double mean = sum/d(data.size());
 
-		const auto variance_k = std::accumulate(data.begin(), data.end(), kahan_sum(),
-		                [&mean](const kahan_sum& a, double b){
-			                return a + (b - mean)*(b - mean);
-		                }
-		);
+		variance_accumulator var_acc = {mean};
+		const auto variance_k = std::accumulate(data.begin(), data.end(), kahan_sum(), var_acc);
+		assert(d(variance_k) >= 0 && "needs to be >= 0");
 		auto variance = d(variance_k)/d(data.size());
 		const double standard_deviation = std::sqrt(variance);
 		return {standard_deviation, mean};
