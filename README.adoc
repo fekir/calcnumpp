@@ -1,1 +1,17 @@
-# calcnumpp
+= calcnumpp
+
+This is a test repository for implementing  different mathematical alogithms.
+
+It is not a generic library like http://arma.sourceforge.net/[Armadillo] or http://blitz.sourceforge.net/[Blitz++].
+It is a partial rewrite of algorithms I had to implement in C and Octave during university for various numerical courses.
+
+I plan to implement different algorithm, the roadmap will probably be the following:
+
+ - solving the root problems for nonlinear equations (bisection, Newton, and some of its variations)
+ - algorithms and structures for managing polynomials and approximate functions through polynomials (interpolation)
+ - managing matrices and solving linear equations
+ - some basic algorithms for solving Cauchy problems, like Euler or Runge-Kutta methods
+ - other algorithms for solving ODE problems, like Adams method
+
+
+More informations can be found at https://fekir.info/categories/floating-in-c++/.
