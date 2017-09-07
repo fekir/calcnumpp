@@ -23,6 +23,7 @@ add_executable(${PROJECT_NAME}Test
 	include/statistics.hpp
 	include/intervals.hpp
 	include/error.hpp
+	include/constants.hpp
 
 	# root finding algorithms
 	include/bisec.hpp
@@ -30,6 +31,7 @@ add_executable(${PROJECT_NAME}Test
 	include/fixed_point.hpp
 	# polynomial and function approximation
 	include/polynomial.hpp
+	include/interpolation.hpp
 
 	# --- test
 
@@ -45,4 +47,5 @@ add_executable(${PROJECT_NAME}Test
 
 	# test polynomial and function approximation
 	test/polynomial.cpp
+	test/interpolation.cpp
 )
