@@ -15,6 +15,20 @@
 
 namespace calcnum{
 
+	template<class iter, class cont>
+	void preallocate_if_randomaccess(const iter begin, const iter end, cont& container, int diff = 0) {
+		using iter_type = typename std::iterator_traits<iter>::iterator_category;
+		if(std::is_same<iter_type,std::random_access_iterator_tag>::value){
+			auto size = std::distance(begin, end);
+			if (diff >=0){
+				size += diff;
+			}else{
+				size = std::max(size, static_cast<decltype(size)>(-diff)) + diff;
+			}
+			container.reserve(static_cast<decltype(container.size())>(size));
+		}
+	}
+
 	// operator== should, most of the times, be avoided between floating point values
 	inline bool approx_equal(double a, double b, double err){
 		assert(err>0 && "error for comparing values should be strict positive");

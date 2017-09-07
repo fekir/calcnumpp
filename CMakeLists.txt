@@ -28,6 +28,9 @@ add_executable(${PROJECT_NAME}Test
 	include/bisec.hpp
 	include/newton.hpp
 	include/fixed_point.hpp
+	# polynomial and function approximation
+	include/polynomial.hpp
+
 	# --- test
 
 	# test generic methods
@@ -39,4 +42,7 @@ add_executable(${PROJECT_NAME}Test
 	test/bisec.cpp
 	test/newton.cpp
 	test/fixed_point.cpp
+
+	# test polynomial and function approximation
+	test/polynomial.cpp
 )
