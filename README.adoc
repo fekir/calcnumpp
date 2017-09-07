@@ -15,3 +15,11 @@ I plan to implement different algorithm, the roadmap will probably be the follow
 
 
 More informations can be found at https://fekir.info/categories/floating-in-c++/.
+
+I hope that this project can help math students to implement theyr own
+
+The code should be easy to read and use.
+The project is structured with https://cmake.org/[CMake], with most compiler warnings enabled.
+
+By using an IDE like https://en.wikipedia.org/wiki/Qt_Creator[Qt Creator], that also provides an easy-to use frontend for debugging, I hope that this project may help other students.
+Inspecting the variables during runtime, eases the process of debugging a lot.
