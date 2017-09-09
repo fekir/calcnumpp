@@ -85,11 +85,8 @@ TEST_CASE("spline1"){
 	const auto err = 0.0001;
 	const std::vector<double> data_x = {-2, 0, 1, 2, 3};
 	const std::vector<double> data_y = {-8, 0, 1, 8, 27};
-	auto spline = create_interp_spline_1(std::begin(data_x), std::end(data_x),std::begin(data_y), std::end(data_y));
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wfloat-equal"
+	auto spline = create_interp_spline_deg1(std::begin(data_x), std::end(data_x),std::begin(data_y), std::end(data_y));
 	for(std::size_t i = 0; i != data_x.size(); ++i){
-		REQUIRE(spline(data_x[i])== data_y[i]);
+		REQUIRE(approx_equal(spline(data_x[i]), data_y[i], err));
 	}
-#pragma GCC diagnostic pop
 }

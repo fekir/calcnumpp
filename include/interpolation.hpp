@@ -59,23 +59,23 @@ namespace calcnum{
 
 	class chebyshev_nodes{
 		open_interval interv;
-		std::size_t n;
+		std::size_t num_nodes;
 	public:
 		bool invariant() const{
-			return n > 0 && calcnum::invariant(interv);;
+			return num_nodes > 0 && calcnum::invariant(interv);;
 		}
-		chebyshev_nodes(const open_interval& interval, std::size_t num_nodes) : interv(interval), n(num_nodes){
+		chebyshev_nodes(const open_interval& interval, std::size_t num_nodes_) : interv(interval), num_nodes(num_nodes_){
 			test_invariant<chebyshev_nodes> _(*this);
 		}
 		double operator[](std::size_t i) const {
 			test_invariant<chebyshev_nodes> _(*this);
-			assert(i<n);
-			auto toret =  midpoint(interv) - (length(interv)/2)*std::cos(pi*d(2*i+1)/d(2*n));
+			assert(i<num_nodes);
+			auto toret =  midpoint(interv) - (length(interv)/2)*std::cos(pi*d(2*i+1)/d(2*num_nodes));
 			return toret;
 		}
 		std::size_t size() const noexcept {
 			test_invariant<chebyshev_nodes> _(*this);
-			return n;
+			return num_nodes;
 		}
 
 		class iterator{
@@ -146,7 +146,7 @@ namespace calcnum{
 		}
 		iterator end() const {
 			test_invariant<chebyshev_nodes> _(*this);
-			return iterator(n, *this);
+			return iterator(num_nodes, *this);
 		}
 	};
 
@@ -411,10 +411,10 @@ namespace calcnum{
 	}
 
 	// FIXME: if two adjacent splines are equals (ie same coeffs), we can use the same spline on a bigger interval
-	class interp_spline_1{
+	class interp_spline_deg1{
 		std::vector<poly_interv> p_is;
 	public:
-		interp_spline_1() = default;
+		interp_spline_deg1() = default;
 		bool invariant() const {
 			bool grade_less_eq2 = !p_is.empty() && std::all_of(std::begin(p_is), std::end(p_is), [](const poly_interv& p_i){return p_i.poly.coeffs().size() <= 2;});
 			bool interval_are_adjacent_sorted = (std::is_sorted_until(std::begin(p_is), std::end(p_is), poly_interv_are_adjacent) == std::end(p_is));
@@ -427,11 +427,11 @@ namespace calcnum{
 			}
 			return grade_less_eq2 && interval_are_adjacent_sorted && last_cond && border_cond;
 		}
-		explicit interp_spline_1(const std::vector<poly_interv>& p_is_) : p_is(p_is_){
-			test_invariant<interp_spline_1> _(*this);
+		explicit interp_spline_deg1(const std::vector<poly_interv>& p_is_) : p_is(p_is_){
+			test_invariant<interp_spline_deg1> _(*this);
 		}
 		double operator()(double x) const {
-			test_invariant<interp_spline_1> _(*this);
+			test_invariant<interp_spline_deg1> _(*this);
 			auto it = std::find_if(std::begin(p_is), std::end(p_is), [x](const poly_interv& v){return x <= v.b;});
 			if(it == std::end(p_is)){
 				assert(std::isnan(x) && "we should always find an interval");
@@ -443,7 +443,7 @@ namespace calcnum{
 
 
 	template<class InputIt>
-	interp_spline_1 create_interp_spline_1(InputIt first, InputIt last, InputIt first2, InputIt last2){
+	interp_spline_deg1 create_interp_spline_deg1(InputIt first, InputIt last, InputIt first2, InputIt last2){
 		std::vector<poly_interv> toreturn;
 		preallocate_if_randomaccess(first, last, toreturn);
 		auto it = first;
@@ -465,14 +465,8 @@ namespace calcnum{
 		assert(!toreturn.empty());
 		// extend intervals of spline
 		toreturn.back().b = std::numeric_limits<double>::infinity();
-		return interp_spline_1(toreturn);
+		return interp_spline_deg1(toreturn);
 	}
-
-	// involves solvin a lineear system -> maybe later
-	//template<class InputIt>
-	//interp_spline_1 create_interp_spline_3(InputIt first, InputIt last){
-	//}
-
 }
 
 #endif
