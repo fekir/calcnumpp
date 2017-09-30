@@ -52,7 +52,8 @@ namespace calcnum{
 		return (d<0) ? sign::lesszero : (d>0) ? sign::greaterzero : sign::zero;
 	}
 
-
+	/// use to calculate convergency if e_{n+1} depends on e_n
+	///  for example: e_{n+1} = c*(e_n)^2
 	inline std::vector<double> calculate_convergency(std::vector<double> err){
 		assert(!err.empty() && "makes no sense to analyze empty vector");
 		const auto err_size = err.size();
@@ -75,6 +76,7 @@ namespace calcnum{
 		return conv;
 	}
 
+	/// Given {v1, v2, v3, ...., v{n+1}} returns {ln(v1)/ln(v2), ln(v2)/ln(v3), ..., ln(vn)/ln(v_{n+1}}
 	inline std::vector<double> calculate_convergency_no_cancellation(std::vector<double> err){
 		assert(!err.empty() && "makes no sense to analyze empty vector");
 		const auto err_size = err.size();
@@ -87,6 +89,26 @@ namespace calcnum{
 		conv.pop_back();
 		assert(conv.size() == err_size-1);
 		return conv;
+	}
+
+
+	/// use to calculate convergency if e_n depends on h_n
+	///  for example: e_n = c*(h_n)^2
+	inline std::vector<double> calculate_convergency(std::vector<double> err, std::vector<double> step){
+		assert(err.size() == step.size());
+
+		// apply log
+		std::transform(err.begin(), err.end(), err.begin(), [](double d){return std::log(std::fabs(d));});
+		std::transform(step.begin(), step.end(), step.begin(), [](double d){return std::log(std::fabs(d));});
+
+		// apply diff
+		std::adjacent_difference(err.begin(), err.end(), err.begin());
+		std::adjacent_difference(step.begin(), step.end(), step.begin());
+
+
+
+		std::transform(err.begin(), err.end(), step.begin(), err.begin(), [](double a ,double b){return a/b;});
+		return err;
 	}
 
 	inline std::vector<double> clear_from_inf_nan(std::vector<double> c){

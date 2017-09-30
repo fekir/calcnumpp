@@ -32,6 +32,8 @@ add_executable(${PROJECT_NAME}Test
 	# polynomial and function approximation
 	include/polynomial.hpp
 	include/interpolation.hpp
+	# integral approximation
+	include/integration.hpp
 
 	# --- test
 
@@ -48,4 +50,6 @@ add_executable(${PROJECT_NAME}Test
 	# test polynomial and function approximation
 	test/polynomial.cpp
 	test/interpolation.cpp
+	# test integral approximation
+	test/integration.cpp
 )
