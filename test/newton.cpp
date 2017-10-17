@@ -55,6 +55,7 @@ TEST_CASE("newton", "[newton]"){
         const auto err = simple_newton_test(fun_new, dfun_new, 7, 2);
         const auto conv = calcnum::calculate_convergency(err);
         auto res = calcnum::analyze_data(calcnum::clear_from_inf_nan(conv));
+        INFO(res);
         REQUIRE_FALSE(calcnum::is_outlier(res, 2));
     }
     SECTION("complex_fun"){
@@ -62,12 +63,14 @@ TEST_CASE("newton", "[newton]"){
             const auto err = simple_newton_test(fun_new_doubleroot, dfun_new_doubleroot, 0.1,0);
             const auto conv = calcnum::calculate_convergency(err);
             auto res = calcnum::analyze_data(calcnum::clear_from_inf_nan(conv));
+            INFO(res);
             REQUIRE_FALSE(calcnum::is_outlier(res, 1));
         }
         SECTION("quad_conv"){
             auto err = simple_newton_test(fun_new_doubleroot, dfun_new_doubleroot, 1.2,1.27970133100099630500239591776735167562639703793577);
             const auto conv = calcnum::calculate_convergency(err);
             auto res = calcnum::analyze_data(calcnum::clear_from_inf_nan(conv));
+            INFO(res);
             REQUIRE_FALSE(calcnum::is_outlier(res, 2));
         }
     }
@@ -98,6 +101,7 @@ TEST_CASE("secant", "[newton][secant]"){
             const auto err = simple_secanti_test(fun_new_doubleroot, 1.2, 1.3, 1.27970133100099630500239591776735167562639703793577);
             const auto conv = calcnum::calculate_convergency(err);
             auto res = calcnum::analyze_data(calcnum::clear_from_inf_nan(conv));
+            INFO(res);
             REQUIRE_FALSE(calcnum::is_outlier(res, 1.618));
         }
     }

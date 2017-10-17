@@ -13,7 +13,6 @@ using namespace calcnum;
 
 TEST_CASE("kahan", "[utils][kahan]"){
 	SECTION("verify plus equivalence"){
-		const auto err = 0.0001;
 		kahan_sum h1;
 		kahan_sum h2;
 		kahan_sum h3;
@@ -22,7 +21,7 @@ TEST_CASE("kahan", "[utils][kahan]"){
 			h2 += 1;
 			++h3;
 		}
-		REQUIRE( approx_equal(d(h1), 10, err));
+		REQUIRE(d(h1) == Approx(10));
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 		REQUIRE( d(h1) == d(h2));
@@ -30,7 +29,6 @@ TEST_CASE("kahan", "[utils][kahan]"){
 #pragma GCC diagnostic pop
 	}
 	SECTION("verify minus equivalence"){
-		const auto err = 0.0001;
 		kahan_sum h1;
 		kahan_sum h2;
 		kahan_sum h3;
@@ -39,7 +37,7 @@ TEST_CASE("kahan", "[utils][kahan]"){
 			h2 -= 1;
 			--h3;
 		}
-		REQUIRE( approx_equal(d(h1), -10, err));
+		REQUIRE(d(h1) == Approx(-10));
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 		REQUIRE( d(h1) == d(h2));

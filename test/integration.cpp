@@ -22,7 +22,6 @@ namespace  {
 
 }
 TEST_CASE("integrate_pto_medio"){
-	//double err = std::numeric_limits<double>::infinity();
 	std::vector<double> err;
 	std::vector<double> step;
 	for(std::size_t i = 1; i != 10; ++i){
@@ -49,6 +48,7 @@ TEST_CASE("integrate_trapezi"){
 	}
 	const auto conv = calcnum::calculate_convergency(err, step);
 	auto res = calcnum::analyze_data(calcnum::clear_from_inf_nan(conv));
+	INFO(res);
 	REQUIRE_FALSE(calcnum::is_outlier(res, 2));
 
 }
@@ -58,17 +58,17 @@ TEST_CASE("newton-cotes"){
 	SECTION("pto_medio"){
 		auto val_medio = integrate_pto_medio(fun_to_integrate, open_int_to_integrate);
 		auto val_cotes = integrate_newton_cotes(fun_to_integrate, open_int_to_integrate, 1);
-		REQUIRE(approx_equal(val_cotes, val_medio, 0.00001));
+		REQUIRE(val_cotes == Approx(val_medio));
 	}
 	SECTION("trapezi"){
 		auto val_trapezi = integrate_trapezoidal(fun_to_integrate, close_int_to_integrate);
 		auto val_cotes = integrate_newton_cotes(fun_to_integrate, close_int_to_integrate, 2);
-		REQUIRE(approx_equal(val_cotes, val_trapezi, 0.00001));
+		REQUIRE(val_cotes == Approx(val_trapezi));
 	}
 	SECTION("cav_simps"){
 		auto val_cotes = integrate_newton_cotes(fun_to_integrate, close_int_to_integrate, 3);
 		auto val_cavsimps= 57.299530349;
-		REQUIRE(approx_equal(val_cotes, val_cavsimps, 0.00001));
+		REQUIRE(val_cotes == Approx(val_cavsimps));
 	}
 }
 
@@ -78,19 +78,19 @@ TEST_CASE("newton-cotes composito"){
 		for(std::size_t i = 1; i != 100; ++i){
 			auto val_medio = integrate_pto_medio(fun_to_integrate, open_int_to_integrate, i);
 			auto val_cotes = integrate_newton_cotes(fun_to_integrate, open_int_to_integrate, 1, i);
-			REQUIRE(approx_equal(val_cotes, val_medio, 0.00000001));
+			REQUIRE(val_cotes == Approx(val_medio));
 		}
 	}
 	SECTION("trapezi"){
 		for(std::size_t i = 1; i != 100; ++i){
 			auto val_trapezi = integrate_trapezoidal(fun_to_integrate, close_int_to_integrate, i);
 			auto val_cotes = integrate_newton_cotes(fun_to_integrate, close_int_to_integrate, 2, i);
-			REQUIRE(approx_equal(val_cotes, val_trapezi, 0.00000001));
+			REQUIRE(val_cotes == Approx(val_trapezi));
 		}
 	}
 	SECTION("cav_simps"){
 		auto val_cotes = integrate_newton_cotes(fun_to_integrate, close_int_to_integrate, 3,1);
 		auto val_cavsimps= 57.299530349;
-		REQUIRE(approx_equal(val_cotes, val_cavsimps, 0.00001));
+		REQUIRE(val_cotes == Approx(val_cavsimps));
 	}
 }

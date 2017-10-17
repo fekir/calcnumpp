@@ -36,12 +36,14 @@ TEST_CASE("fixed_point", "[fixed_point]"){
 		auto err = simple_fix_point_test(cos_to_fix, 1, 0.73908513321516);
 		const auto conv = calcnum::calculate_convergency(err);
 		auto res = calcnum::analyze_data(calcnum::clear_from_inf_nan(conv));
+		INFO(res);
 		REQUIRE_FALSE(calcnum::is_outlier(res, 1));
 	}
 	SECTION("sin(x)=x"){
 		auto err = simple_fix_point_test(sin_to_fix, 1, 0);
 		const auto conv = calcnum::calculate_convergency(err);
 		auto res = calcnum::analyze_data(calcnum::clear_from_inf_nan(conv));
+		INFO(res);
 		REQUIRE_FALSE(calcnum::is_outlier(res, 1));
 	}
 }

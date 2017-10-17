@@ -15,8 +15,6 @@
 using namespace calcnum;
 
 TEST_CASE("lagrange"){
-	const auto err = 0.0001;
-
 
 	SECTION("exact"){
 		std::vector<double> data_x = {1, 2, 3};
@@ -25,34 +23,38 @@ TEST_CASE("lagrange"){
 		const auto pol1 = data_y[0]*lagr_base_poly(std::begin(data_x), std::end(data_x), 0);
 		{
 			const auto& coeff1 = pol1.coeffs();
-			REQUIRE(approx_equal(coeff1[0], 3, err));
-			REQUIRE(approx_equal(coeff1[1], -2.5, err));
-			REQUIRE(approx_equal(coeff1[2], 0.5, err));
+			REQUIRE(coeff1[0] == Approx(3));
+			REQUIRE(coeff1[1] == Approx(-2.5));
+			REQUIRE(coeff1[2] == Approx(0.5));
 		}
 		const auto pol2 = data_y[1]*lagr_base_poly(std::begin(data_x), std::end(data_x), 1);
 		{
 			const auto& coeff2 = pol2.coeffs();
-			REQUIRE(approx_equal(coeff2[0], -12, err));
-			REQUIRE(approx_equal(coeff2[1], 16, err));
-			REQUIRE(approx_equal(coeff2[2], -4, err));
+			REQUIRE(coeff2[0] == Approx(-12));
+			REQUIRE(coeff2[1] == Approx(16));
+			REQUIRE(coeff2[2] == Approx(-4));
 		}
 		const auto pol3 = data_y[2]*lagr_base_poly(std::begin(data_x), std::end(data_x), 2);
 		{
 			const auto& coeff3 = pol3.coeffs();
-			REQUIRE(approx_equal(coeff3[0], 9, err));
-			REQUIRE(approx_equal(coeff3[1], -13.5, err));
-			REQUIRE(approx_equal(coeff3[2], 4.5, err));
+			REQUIRE(coeff3[0] == Approx(9));
+			REQUIRE(coeff3[1] == Approx(-13.5));
+			REQUIRE(coeff3[2] == Approx(4.5));
 		}
 		auto pol = pol1 + pol2 + pol3;
 		{
 			const auto& coeff = pol.coeffs();
-			REQUIRE(approx_equal(coeff[0], 0, err));
-			REQUIRE(approx_equal(coeff[1], 0, err));
-			REQUIRE(approx_equal(coeff[2], 1, err));
+			REQUIRE(coeff[0] == Approx(0));
+			REQUIRE(coeff[1] == Approx(0));
+			REQUIRE(coeff[2] == Approx(1));
 		}
 
 		auto lagr_pol = lagr_poly(std::begin(data_x), std::end(data_x),std::begin(data_y), std::end(data_y));
-		REQUIRE(pol.coeffs() == lagr_pol.coeffs());
+
+		REQUIRE(pol.coeffs().size() == lagr_pol.coeffs().size());
+		for(std::size_t i = 0; i != pol.coeffs().size(); ++i){
+			REQUIRE(pol.coeffs()[i] == Approx(lagr_pol.coeffs()[i]));
+		}
 	}
 
 	SECTION("higher order"){
@@ -61,6 +63,9 @@ TEST_CASE("lagrange"){
 		std::vector<double> data_y = {1, 8, 27};
 
 		auto pol = lagr_poly(std::begin(data_x), std::end(data_x),std::begin(data_y), std::end(data_y));
+		REQUIRE(pol.coeffs()[0] == Approx(6));
+		REQUIRE(pol.coeffs()[1] == Approx(-11));
+		REQUIRE(pol.coeffs()[2] == Approx(6));
 		REQUIRE(pol.coeffs() == std::vector<double>({6, -11, 6}));
 	}
 
@@ -78,15 +83,14 @@ TEST_CASE("chebyshev"){
 	REQUIRE(std::is_sorted(std::begin(nodes), std::end(nodes)));
 	REQUIRE(*std::min_element(std::begin(cb), std::end(cb)) > interv.a);
 	REQUIRE(*std::min_element(std::begin(cb), std::end(cb)) < interv.b);
-	REQUIRE(approx_equal(nodes[0],-0.98768, 0.0001 ));
+	REQUIRE(nodes[0] == Approx(-0.98768));
 }
 
 TEST_CASE("spline1"){
-	const auto err = 0.0001;
 	const std::vector<double> data_x = {-2, 0, 1, 2, 3};
 	const std::vector<double> data_y = {-8, 0, 1, 8, 27};
 	auto spline = create_interp_spline_deg1(std::begin(data_x), std::end(data_x),std::begin(data_y), std::end(data_y));
 	for(std::size_t i = 0; i != data_x.size(); ++i){
-		REQUIRE(approx_equal(spline(data_x[i]), data_y[i], err));
+		REQUIRE(spline(data_x[i]) == Approx(data_y[i]));
 	}
 }

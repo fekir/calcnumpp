@@ -19,8 +19,7 @@ TEST_CASE("convergency (newton)"){
 		auto conv = calcnum::calculate_convergency(err);
 
 		for(auto v : conv){
-			INFO(v);
-			REQUIRE(approx_equal(v, 1, 0.0001));
+			REQUIRE(v == Approx(1));
 		}
 	}
 	SECTION("quadratic"){
@@ -30,8 +29,7 @@ TEST_CASE("convergency (newton)"){
 		auto conv = calcnum::calculate_convergency(err);
 
 		for(auto v : conv){
-			INFO(v);
-			REQUIRE(approx_equal(v, 2, 0.0001));
+			REQUIRE(v == Approx(2));
 		}
 	}
 }
@@ -52,8 +50,7 @@ TEST_CASE("convergency (integration)"){
 		auto conv = calcnum::calculate_convergency(err, step);
 
 		for(auto v : conv){
-			INFO(v);
-			REQUIRE(approx_equal(v, 1, 0.0001));
+			REQUIRE(v == Approx(1));
 		}
 	}
 	SECTION("quadratic"){
@@ -63,8 +60,7 @@ TEST_CASE("convergency (integration)"){
 		auto conv = calcnum::calculate_convergency(err, step);
 
 		for(auto v : conv){
-			INFO(v);
-			REQUIRE(approx_equal(v, 2, 0.0001));
+			REQUIRE(v == Approx(2));
 		}
 	}
 }
