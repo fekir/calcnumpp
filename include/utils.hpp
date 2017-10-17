@@ -55,7 +55,7 @@ namespace calcnum{
 	/// use to calculate convergency if e_{n+1} depends on e_n
 	///  for example: e_{n+1} = c*(e_n)^2
 	inline std::vector<double> calculate_convergency(std::vector<double> err){
-		assert(!err.empty() && "makes no sense to analyze empty vector");
+		assert(err.size() > 1 && "makes no sense to analyze vector with less than 2 elemensts");
 		const auto err_size = err.size();
 		std::transform(err.begin(), err.end(), err.begin(), [](double d){return std::log(std::fabs(d));});
 
@@ -103,9 +103,9 @@ namespace calcnum{
 
 		// apply diff
 		std::adjacent_difference(err.begin(), err.end(), err.begin());
+		err.erase(err.begin());
 		std::adjacent_difference(step.begin(), step.end(), step.begin());
-
-
+		step.erase(step.begin());
 
 		std::transform(err.begin(), err.end(), step.begin(), err.begin(), [](double a ,double b){return a/b;});
 		return err;

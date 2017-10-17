@@ -14,6 +14,7 @@
 #include <vector>
 #include <algorithm>
 #include <numeric>
+#include <iostream>
 
 namespace calcnum{
 
@@ -21,6 +22,11 @@ namespace calcnum{
 		double standard_deviation;
 		double mean;
 	};
+
+	inline std::ostream& operator<<(std::ostream& os, const sd_mean& dt) {
+		os << "[standard deviation " << dt.standard_deviation << ", mean " << dt.mean <<  "]";
+		return os;
+	}
 
 
 	struct variance_accumulator{

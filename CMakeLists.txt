@@ -41,6 +41,7 @@ add_executable(${PROJECT_NAME}Test
 	test/utils.cpp
 	test/kahan.cpp
 	test/intervals.cpp
+	test/convergency.cpp
 
 	# test root finding algorithms
 	test/bisec.cpp
