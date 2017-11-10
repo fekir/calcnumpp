@@ -35,6 +35,10 @@ add_executable(${PROJECT_NAME}Test
 	# integral approximation
 	include/integration.hpp
 
+	# matrix
+	include/matrix.hpp
+
+
 	# --- test
 
 	# test generic methods
@@ -53,4 +57,8 @@ add_executable(${PROJECT_NAME}Test
 	test/interpolation.cpp
 	# test integral approximation
 	test/integration.cpp
+
+	# matrix
+	test/matrix.cpp
+
 )
