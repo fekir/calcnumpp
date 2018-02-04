@@ -206,7 +206,7 @@ namespace calcnum{
 			bool invariant() const{
 				return i <= nodes.get().size();
 			}
-			iterator(std::size_t i_, const equidistant_nodes_open& n) :i(i_), nodes(n){
+			iterator(std::size_t i_, const equidistant_nodes_open& n_) :i(i_), nodes(n_){
 				test_invariant<iterator> _(*this);
 			}
 			iterator& operator++ () {
@@ -318,7 +318,7 @@ namespace calcnum{
 				return i <= nodes.get().size();
 			}
 
-			iterator(std::size_t i_, const equidistant_nodes_closed& n) :i(i_), nodes(n){
+			iterator(std::size_t i_, const equidistant_nodes_closed& n_) :i(i_), nodes(n_){
 				test_invariant<iterator> _1(*this);
 			}
 			iterator& operator++ () {

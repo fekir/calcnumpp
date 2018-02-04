@@ -1,4 +1,4 @@
-//          Copyright Federico Kircheis 2017
+//          Copyright Federico Kircheis 2017-2018
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -30,28 +30,31 @@ namespace calcnum{
 		std::fenv_t envp{};
 		auto res = std::fegetenv(&envp);
 		assert(res==0 && "FIXME: handle possible failure of fegetenv");
+		(void)res;
 		return envp;
 	}
 
 #if (math_errhandling & MATH_ERREXCEPT)
-    struct reset_fenv {
-        const std::fenv_t m_envp;
-        reset_fenv() : m_envp(get_fenv()){
-            auto res = std::feclearexcept(FE_ALL_EXCEPT);
-            assert(res==0 && "FIXME: handle possible failure of feclearexcept");
-        }
-        ~reset_fenv() {
-            const auto res = std::fesetenv(&m_envp);
-            assert(res==0 && "FIXME: handle possible failure of fesetenv");
-        }
-    };
+	struct reset_fenv {
+		const std::fenv_t m_envp;
+		reset_fenv() : m_envp(get_fenv()){
+			auto res = std::feclearexcept(FE_ALL_EXCEPT);
+			assert(res==0 && "FIXME: handle possible failure of feclearexcept");
+			(void)res;
+		}
+		~reset_fenv() {
+			const auto res = std::fesetenv(&m_envp);
+			assert(res==0 && "FIXME: handle possible failure of fesetenv");
+			(void)res;
+		}
+	};
 #endif
 
 
 
-    struct reset_float_env {
+	struct reset_float_env {
 #if (math_errhandling & MATH_ERRNO)
-        reset_errno err;
+		reset_errno err;
 #endif
 #if (math_errhandling & MATH_ERREXCEPT)
 		reset_fenv fenv;
