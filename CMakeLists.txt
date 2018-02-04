@@ -39,6 +39,10 @@ add_executable(${PROJECT_NAME}Test
 	include/matrix.hpp
 
 
+	# ODE
+	include/ode.hpp
+	include/euler.hpp
+
 	# --- test
 
 	# test generic methods
@@ -60,5 +64,7 @@ add_executable(${PROJECT_NAME}Test
 
 	# matrix
 	test/matrix.cpp
-
+	
+	# ODE
+	test/euler.cpp
 )
